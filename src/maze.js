@@ -6,6 +6,7 @@ class Maze {
     this.cells = [];
     this.unvisited = [];
 
+
     this.newMaze(n);
 
     this.path = []; // path of visited cell coordinates
@@ -17,10 +18,13 @@ class Maze {
   }
 
   newMaze(n) {
+    // console.log("end")
+    // console.log(n)
+    
     for (let i = 0; i < n; i++) {
       this.cells[i] = []; // [ [], [], [] ]
       this.unvisited[i] = []; // [ [], [], [] ]
-
+      // console.log("??")
       for (let j = 0; j < n; j++) {
         this.cells[i][j] = [0, 0, 0, 0];    // [ [ [0,0,0,0], [0,0,0,0], [0,0,0,0] ],       [ [ [true], [true], [true] ],
         this.unvisited[i][j] = true;        //   [ [0,0,0,0], [0,0,0,0], [0,0,0,0] ],         [ [true], [true], [true] ],
@@ -32,10 +36,20 @@ class Maze {
     let x = Math.floor(Math.random() * n);
     let y = Math.floor(Math.random() * n);
     let coords = [y, x]
-    this.path.push(coords);                  // [ [y, x] ]
+    this.path.push(coords);
+    // [ [y, x] ]
+    // console.log("start")
+    // console.log(n);
+    // console.log(x);
+    // console.log(y);
+    // console.log(this)
+
+    console.log(this.unvisited)
+    debugger
     this.unvisited[y][x] = false;       
     this.countVisited += 1;
     this.currCell = coords;
+    
     // return coords;    
   }
 
@@ -95,14 +109,11 @@ class Maze {
   }
 }
 
+module.exports = Maze;
 
-let maze2 = new Maze(3);
+// let maze2 = new Maze(4);
 
-console.log(maze2);
-
-
-
-
+// console.log(maze2);
 
 
 
