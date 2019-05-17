@@ -3,11 +3,7 @@
 // [ TOP, RIGHT, BOTTOM, LEFT ]
 
 const drawMaze = (maze, ctx, n, w, h) => {
-  console.log("????")
-  console.log(n)
-  // let mazev/ = new Maze(n);
-  // let canvas = document.getElementById('maze');
-  // let ctx = canvas.getContext('2d');
+
   let cells = maze.cells;
   ctx.canvas.width = w;
   ctx.canvas.height = h;
@@ -16,8 +12,7 @@ const drawMaze = (maze, ctx, n, w, h) => {
 
   for (let i = 0; i < n; i++) {
     let row = cells[i];
-    console.log(cells)
-    console.log(row)
+
     for (let j = 0; j < n; j++) {
       let cell = row[j];
 

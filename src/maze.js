@@ -17,14 +17,10 @@ class Maze {
     this.run(n);
   }
 
-  newMaze(n) {
-    // console.log("end")
-    // console.log(n)
-    
+  newMaze(n) {  
     for (let i = 0; i < n; i++) {
       this.cells[i] = []; // [ [], [], [] ]
       this.unvisited[i] = []; // [ [], [], [] ]
-      // console.log("??")
       for (let j = 0; j < n; j++) {
         this.cells[i][j] = [0, 0, 0, 0];    // [ [ [0,0,0,0], [0,0,0,0], [0,0,0,0] ],       [ [ [true], [true], [true] ],
         this.unvisited[i][j] = true;        //   [ [0,0,0,0], [0,0,0,0], [0,0,0,0] ],         [ [true], [true], [true] ],
@@ -38,19 +34,11 @@ class Maze {
     let coords = [y, x]
     this.path.push(coords);
     // [ [y, x] ]
-    // console.log("start")
-    // console.log(n);
-    // console.log(x);
-    // console.log(y);
-    // console.log(this)
 
-    console.log(this.unvisited)
-    debugger
     this.unvisited[y][x] = false;       
     this.countVisited += 1;
     this.currCell = coords;
-    
-    // return coords;    
+       
   }
 
 
@@ -59,7 +47,7 @@ class Maze {
 
   run(n) { // REMEBER TO PASS N
     while (this.countVisited < this.totalCellCount) {
-      // console.log(this.currCell)
+
       let possible = [
         [this.currCell[0] - 1, this.currCell[1], 0, 2], // top
         [this.currCell[0], this.currCell[1] + 1, 1, 3], // right
@@ -111,22 +99,3 @@ class Maze {
 
 module.exports = Maze;
 
-// let maze2 = new Maze(4);
-
-// console.log(maze2);
-
-
-
-
-// generateMaze(n) {
-//   let gridCells = n * n;
-//   let checkedCells = [];
-//   let uncheckedCells = [];
-
-//   for (let i = 0; i < n; i++) {
-//     gridCells.push([]);
-//     uncheckedCells.push([]);
-
-
-//   }
-// } 

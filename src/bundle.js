@@ -98,11 +98,7 @@
 // [ TOP, RIGHT, BOTTOM, LEFT ]
 
 const drawMaze = (maze, ctx, n, w, h) => {
-  console.log("????")
-  console.log(n)
-  // let mazev/ = new Maze(n);
-  // let canvas = document.getElementById('maze');
-  // let ctx = canvas.getContext('2d');
+
   let cells = maze.cells;
   ctx.canvas.width = w;
   ctx.canvas.height = h;
@@ -111,8 +107,7 @@ const drawMaze = (maze, ctx, n, w, h) => {
 
   for (let i = 0; i < n; i++) {
     let row = cells[i];
-    console.log(cells)
-    console.log(row)
+
     for (let j = 0; j < n; j++) {
       let cell = row[j];
 
@@ -154,6 +149,209 @@ module.exports = drawMaze;
 
 /***/ }),
 
+/***/ "./src/game.js":
+/*!*********************!*\
+  !*** ./src/game.js ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class Game {
+  constructor(obj, view) {
+    this.obj = obj;
+    this.view = view;
+
+  }
+
+  
+}
+
+module.exports = Game;
+
+
+
+
+
+
+
+
+
+// class Game {
+//   constructor(player) {
+//     this.player = player;
+//   }
+
+//   updateView() {
+//     this.view.clear();
+//     this.obj.pos[0] += 1;
+//     this.obj.update();
+//   }
+
+//   draw(ctx, canvas) {
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     ctx.fillStyle = "blue";
+//     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+//     this.player.draw(ctx);
+//   }
+
+//   moveObjects(delta) {
+//     this.player.move(delta);
+//   }
+
+//   step(delta) {
+//     this.moveObjects(delta);
+//   }
+// }
+
+/***/ }),
+
+/***/ "./src/game_view.js":
+/*!**************************!*\
+  !*** ./src/game_view.js ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class GameView {
+  constructor(canvas, ctx, obj) {
+    this.canvas = canvas;
+    this.ctx = ctx;
+    this.obj = obj;
+  }
+
+  start() {
+    this.bindKeyHandlers();
+    setInterval(this.updateView.bind(this), 20);
+  }
+
+  bindKeyHandlers() {
+    const obj = this.obj;
+
+    Object.keys(GameView.MOVES).forEach((k) => {
+      const delta = GameView.MOVES[k];
+      key(k, () => { obj.move(delta) })
+    })
+  }
+
+  clear() {
+    const ctx = this.ctx;
+    const canvas = this.canvas;
+    const width = canvas.width;
+    const height = canvas.height;
+
+    ctx.clearRect(0, 0, width, height);
+  }
+
+  updateView() {
+    this.clear();
+    // this.obj.pos[0] += 1;
+    
+    const ctx = this.ctx;
+    this.obj.draw(ctx);
+  }
+}
+
+module.exports = GameView;
+
+
+GameView.MOVES = {
+  up: [0, -1],
+  left: [-1, 0],
+  down: [0, 1],
+  right: [1, 0]
+}
+
+
+// var myGameArea = {
+//   canvas: document.createElement("canvas"),
+//   start: function () {
+//     this.canvas.width = 480;
+//     this.canvas.height = 270;
+//     this.context = this.canvas.getContext("2d");
+//     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+//     this.interval = setInterval(updateGameArea, 20);
+//   },
+//   clear: function () {
+//     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+//   }
+// }
+
+
+// class GameView {
+//   constructor(gamePiece) {
+//     this.canvas = document.getElementById("maze");
+//     this.ctx = this.canvas.getContext('2d');
+//     this.interval;
+//     this.gamePiece = gamePiece;
+
+//     // this.clear = this.clear.bind(this);
+//   }
+
+//   start() {
+//     let obj = this.gamePiece;
+//     let updateView = this.updateView;
+//     setInterval(updateView(obj), 20);
+//   }
+
+//   clear() {
+//     let width = this.canvas.width;
+//     let height = this.canvas.height;
+//     this.ctx.clearRect(0, 0, width, height);
+//   }
+
+//   updateView(obj) {
+//     let canvas = document.getElementById("maze");
+//     let width = canvas.width;
+//     let height = canvas.height;
+//     let ctx = canvas.getContext('2d');
+//     ctx.clearRect(0, 0, width, height);
+
+//     obj.pos[0] += 1;
+//     console.log(obj.pos);
+//     obj.update(ctx);
+//   }
+// }
+
+
+
+
+// class GameView {
+//   constructor(game, ctx) {
+//     this.ctx = ctx;
+//     this.game = game;
+//     this.player = this.game.player;
+//   }
+
+//   bindKeyHandlers() {
+//     const player = this.player;
+
+//     Object.keys(GameView.MOVES).forEach((k) => {
+//       const delta = GameView.MOVES[k];
+//       key(k, () => { player.move(delta) })
+//     })
+//   }
+
+//   start(delta) {
+//     this.bindKeyHandlers();
+//     const game = this.game;
+//     const ctx = this.ctx;
+//     setInterval(() => {
+//       game.moveObjects(delta);
+//       game.draw(ctx);
+//     }, 20);
+//     // requestAnimationFrame(this.animate.bind(this))
+//   }
+
+//   animate() {
+//     this.game.step(delta)
+//     this.game.draw(this.ctx);
+//     requestAnimationFrame(this.animate.bind(this));
+//   }
+// }
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -163,22 +361,23 @@ module.exports = drawMaze;
 
 const Maze = __webpack_require__(/*! ./maze */ "./src/maze.js");
 const drawMaze = __webpack_require__(/*! ./draw_maze */ "./src/draw_maze.js");
-
-// window.Maze = Maze;
-// window.drawMaze = drawMaze;
-
-
+const MovingObject = __webpack_require__(/*! ./moving_object */ "./src/moving_object.js");
+const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
+const Game = __webpack_require__(/*! ./game */ "./src/game.js");
 
 document.addEventListener("DOMContentLoaded", () => {
-  let n = 20;
-  let w = 500;
-  let h = 500;
-  const canvasEl = document.getElementById("maze");
-
-  const ctx = canvasEl.getContext('2d');
+  let n = 10;
+  let w = 600;
+  let h = 600;
+  const canvas = document.getElementById("maze");
+  const ctx = canvas.getContext('2d');
   const maze = new Maze(n);
-  console.log(maze)
   drawMaze(maze, ctx, n, w, h);
+
+  obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
+  view = new GameView(canvas, ctx, obj);
+  game = new Game(view, obj);
+  view.start();
 })
 
 /***/ }),
@@ -209,14 +408,10 @@ class Maze {
     this.run(n);
   }
 
-  newMaze(n) {
-    // console.log("end")
-    // console.log(n)
-    
+  newMaze(n) {  
     for (let i = 0; i < n; i++) {
       this.cells[i] = []; // [ [], [], [] ]
       this.unvisited[i] = []; // [ [], [], [] ]
-      // console.log("??")
       for (let j = 0; j < n; j++) {
         this.cells[i][j] = [0, 0, 0, 0];    // [ [ [0,0,0,0], [0,0,0,0], [0,0,0,0] ],       [ [ [true], [true], [true] ],
         this.unvisited[i][j] = true;        //   [ [0,0,0,0], [0,0,0,0], [0,0,0,0] ],         [ [true], [true], [true] ],
@@ -230,19 +425,11 @@ class Maze {
     let coords = [y, x]
     this.path.push(coords);
     // [ [y, x] ]
-    // console.log("start")
-    // console.log(n);
-    // console.log(x);
-    // console.log(y);
-    // console.log(this)
 
-    console.log(this.unvisited)
-    debugger
     this.unvisited[y][x] = false;       
     this.countVisited += 1;
     this.currCell = coords;
-    
-    // return coords;    
+       
   }
 
 
@@ -251,7 +438,7 @@ class Maze {
 
   run(n) { // REMEBER TO PASS N
     while (this.countVisited < this.totalCellCount) {
-      // console.log(this.currCell)
+
       let possible = [
         [this.currCell[0] - 1, this.currCell[1], 0, 2], // top
         [this.currCell[0], this.currCell[1] + 1, 1, 3], // right
@@ -303,25 +490,46 @@ class Maze {
 
 module.exports = Maze;
 
-// let maze2 = new Maze(4);
-
-// console.log(maze2);
 
 
+/***/ }),
+
+/***/ "./src/moving_object.js":
+/*!******************************!*\
+  !*** ./src/moving_object.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
 
-// generateMaze(n) {
-//   let gridCells = n * n;
-//   let checkedCells = [];
-//   let uncheckedCells = [];
 
-//   for (let i = 0; i < n; i++) {
-//     gridCells.push([]);
-//     uncheckedCells.push([]);
+class MovingObject {
+  constructor(object) {
+    this.pos = object.pos;
+    this.vel = object.vel;
+    this.height = object.height;
+    this.width = object.width;
+    this.color = object.color;
 
 
-//   }
-// } 
+    // this.ctx.fillStyle = this.color;
+    // this.ctx.fillRect = (this.pos[0], this.pos[1], this.width, this.height)
+  }
+
+  draw(ctx) {
+    ctx.fillStyle = this.color;
+    // ctx.beginPath();
+    ctx.fillRect(this.pos[0], this.pos[1], this.width, this.height)
+    // ctx.fill();
+  }
+
+  move(delta) {
+    this.pos = [this.pos[0] + delta[0], this.pos[1] + delta[1]]
+  }
+
+}
+
+module.exports = MovingObject;
 
 /***/ })
 
