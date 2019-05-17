@@ -99,7 +99,8 @@ const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
 
 class Game {
   constructor(n, canvas, ctx) {
-    this.obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
+    this.obj = new MovingObject({ pos: [10, 10], vel: [10, 10], width: 40, height: 40, color: "#f00" });
+
     const obj = this.obj;
     
     const width = canvas.width;
@@ -124,9 +125,11 @@ class Game {
 
   toImage() {
     const canvas = this.canvas;
+    // debugger
     const data = canvas.toDataURL();
     const img = document.createElement("img");
     img.src = data;
+    
     return img;
   }
 
@@ -194,6 +197,7 @@ class GameView {
     this.obj = obj;
     this.mazeImage = mazeImage;
 
+    
   }
 
   start() {
@@ -202,11 +206,19 @@ class GameView {
   }
 
   bindKeyHandlers() {
+    const ctx = this.ctx;
     const obj = this.obj;
+    const height = this.canvas.height;
+    const width = this.canvas.width;
+    this.validMove = this.validMove.bind(this);
 
     Object.keys(GameView.MOVES).forEach((k) => {
       const delta = GameView.MOVES[k];
-      key(k, () => { obj.move(delta) })
+      key(k, () => { 
+        // debugger
+        this.validMove(delta, k, height, width, obj)
+        // obj.move(delta, k, height, width);        
+      })
     })
   }
 
@@ -215,24 +227,72 @@ class GameView {
     const canvas = this.canvas;
     const width = canvas.width;
     const height = canvas.height;
-
+    
     ctx.clearRect(0, 0, width, height);
+   
     this.drawBackground();
-
+    // debugger;
   }
 
   updateView() {
     this.clear();
-
     const ctx = this.ctx;
     this.obj.draw(ctx);
   }
 
   drawBackground() {
-
-    this.ctx.drawImage(this.mazeImage, 0, 0);
+     this.ctx.drawImage(this.mazeImage, 0, 0);
+   
   }
 
+  validMove(delta, k, height, width, obj) { 
+    let x = obj.pos[0];
+    let y = obj.pos[1];
+    let dx = delta[0];
+    let dy = delta[1];
+    let h = obj.height;
+    let w = obj.width;
+
+    if (k === 'down' && (y + dy + h < height)) {
+      this.clear();
+      this.checkCollision(obj, delta)
+    }
+    if (k === 'up' && (y + dy > 0)) {
+      this.clear();
+      this.checkCollision(obj, delta)
+    }
+    if (k === 'left' && x + dx > 0) {
+      this.clear();
+      this.checkCollision(obj, delta)
+    } 
+    if (k === 'right' && x + dx + w < width) {
+      this.clear();
+      this.checkCollision(obj, delta)
+    }
+  }
+  
+  checkCollision( obj, delta) {
+    let ctx = this.ctx;
+    let newX = obj.pos[0] + delta[0];
+    let newY = obj.pos[1] + delta[1];
+    let h = obj.height;
+    let w = obj.width;
+
+    let imgData = ctx.getImageData(newX, newY, w, h);
+    let pix = imgData.data;
+
+    let collision = false
+
+    for (let i = 3; i < pix.length; i += 4) {
+      if(pix[i] !== 0) {
+        collision = true;
+        break;
+      }
+    }
+    if (!collision) {
+      obj.move(delta);
+    }
+  }
 }
 
 
@@ -597,22 +657,30 @@ class MovingObject {
     this.height = object.height;
     this.width = object.width;
     this.color = object.color;
-
-
+    this.move = this.move.bind(this);
+    // this.validMove = this.validMove.bind(this);
     // this.ctx.fillStyle = this.color;
     // this.ctx.fillRect = (this.pos[0], this.pos[1], this.width, this.height)
   }
 
   draw(ctx) {
-    ctx.fillStyle = this.color;
-    // ctx.beginPath();
-    ctx.fillRect(this.pos[0], this.pos[1], this.width, this.height)
-    // ctx.fill();
+    // debugger
+    
+    // ctx.fillStyle = this.color;
+    // debugger
+    ctx.beginPath();
+    ctx.rect(this.pos[0], this.pos[1], 40, 40);
+    ctx.fillStyle = "red";
+    ctx.fill();
   }
 
-  move(delta) {
+  move(delta, k, height, width) {
+
+      // debugger 
     this.pos = [this.pos[0] + delta[0], this.pos[1] + delta[1]]
+
   }
+
 
 }
 
