@@ -113,6 +113,9 @@ const drawMaze = (maze, ctx, n, w, h) => {
 
       let y = i * inc;
       let x = j * inc;
+      
+      ctx.lineWidth = 5;
+      ctx.lineCap = "round";
 
       if (cell[0] === 0) {
         ctx.moveTo(x, y);
@@ -256,12 +259,14 @@ module.exports = GameView;
 
 
 GameView.MOVES = {
-  up: [0, -1],
-  left: [-1, 0],
-  down: [0, 1],
-  right: [1, 0]
+  up: [0, -10],
+  left: [-10, 0],
+  down: [0, 10],
+  right: [10, 0]
 }
 
+
+// ctx.getImageData();
 
 // var myGameArea = {
 //   canvas: document.createElement("canvas"),
@@ -366,9 +371,9 @@ const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
 const Game = __webpack_require__(/*! ./game */ "./src/game.js");
 
 document.addEventListener("DOMContentLoaded", () => {
-  let n = 10;
-  let w = 600;
-  let h = 600;
+  let n = 15;
+  let w = 750;
+  let h = 750;
   const canvas = document.getElementById("maze");
   const ctx = canvas.getContext('2d');
   const maze = new Maze(n);
@@ -377,7 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
   obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
   view = new GameView(canvas, ctx, obj);
   game = new Game(view, obj);
-  view.start();
+  // view.start();
 })
 
 /***/ }),

@@ -5,9 +5,9 @@ const GameView = require("./game_view");
 const Game = require("./game");
 
 document.addEventListener("DOMContentLoaded", () => {
-  let n = 10;
-  let w = 600;
-  let h = 600;
+  let n = 15;
+  let w = 750;
+  let h = 750;
   const canvas = document.getElementById("maze");
   const ctx = canvas.getContext('2d');
   const maze = new Maze(n);
@@ -16,5 +16,5 @@ document.addEventListener("DOMContentLoaded", () => {
   obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
   view = new GameView(canvas, ctx, obj);
   game = new Game(view, obj);
-  view.start();
+  // view.start();
 })

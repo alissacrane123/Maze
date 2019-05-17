@@ -18,6 +18,9 @@ const drawMaze = (maze, ctx, n, w, h) => {
 
       let y = i * inc;
       let x = j * inc;
+      
+      ctx.lineWidth = 5;
+      ctx.lineCap = "round";
 
       if (cell[0] === 0) {
         ctx.moveTo(x, y);
