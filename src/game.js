@@ -2,16 +2,28 @@ class Game {
   constructor(obj, view) {
     this.obj = obj;
     this.view = view;
-
   }
 
-  
+  start() {
+    const obj = this.obj;
+    const view = this.view;
+    view.bindKeyHandlers(obj);
+    setInterval(view.updateView(obj), 20);
+  }
+
 }
+  
+
 
 module.exports = Game;
 
 
-
+// GameView.MOVES = {
+//   up: [0, -10],
+//   left: [-10, 0],
+//   down: [0, 10],
+//   right: [10, 0]
+// }
 
 
 

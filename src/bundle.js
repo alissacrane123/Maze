@@ -86,72 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/draw_maze.js":
-/*!**************************!*\
-  !*** ./src/draw_maze.js ***!
-  \**************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// const Maze = require("./maze");
-
-// [ TOP, RIGHT, BOTTOM, LEFT ]
-
-const drawMaze = (maze, ctx, n, w, h) => {
-
-  let cells = maze.cells;
-  ctx.canvas.width = w;
-  ctx.canvas.height = h;
-
-  let inc = w / n; // width of canvas div. by num of cells per row
-
-  for (let i = 0; i < n; i++) {
-    let row = cells[i];
-
-    for (let j = 0; j < n; j++) {
-      let cell = row[j];
-
-      let y = i * inc;
-      let x = j * inc;
-      
-      ctx.lineWidth = 5;
-      ctx.lineCap = "round";
-
-      if (cell[0] === 0) {
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + inc, y);
-        ctx.stroke();
-      }
-
-      if (cell[1] === 0) {
-        ctx.moveTo(x + inc, y);
-        ctx.lineTo(x + inc, y + inc);
-        ctx.stroke();
-      }
-
-      if (cell[2] === 0) {
-        ctx.moveTo(x, y + inc);
-        ctx.lineTo(x + inc, y + inc);
-        ctx.stroke();
-      }
-
-      if (cell[3] === 0) {
-        ctx.moveTo(x, y);
-        ctx.lineTo(x, y + inc);
-        ctx.stroke();
-      }
-      
-    }
-  }
-}
-
-// drawMaze(10, 500, 500);
-
-
-module.exports = drawMaze;
-
-/***/ }),
-
 /***/ "./src/game.js":
 /*!*********************!*\
   !*** ./src/game.js ***!
@@ -163,16 +97,28 @@ class Game {
   constructor(obj, view) {
     this.obj = obj;
     this.view = view;
-
   }
 
-  
+  start() {
+    const obj = this.obj;
+    const view = this.view;
+    view.bindKeyHandlers(obj);
+    setInterval(view.updateView(obj), 20);
+  }
+
 }
+  
+
 
 module.exports = Game;
 
 
-
+// GameView.MOVES = {
+//   up: [0, -10],
+//   left: [-10, 0],
+//   down: [0, 10],
+//   right: [10, 0]
+// }
 
 
 
@@ -214,13 +160,16 @@ module.exports = Game;
   !*** ./src/game_view.js ***!
   \**************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+const Maze = __webpack_require__(/*! ./maze */ "./src/maze.js");
 
 class GameView {
-  constructor(canvas, ctx, obj) {
+  constructor(canvas, ctx, obj, n) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.obj = obj;
+    this.maze = new Maze(n);
   }
 
   start() {
@@ -244,16 +193,20 @@ class GameView {
     const height = canvas.height;
 
     ctx.clearRect(0, 0, width, height);
+    const maze = this.maze;
+    const n = maze.n;
+    maze.drawMaze(ctx, n, width, height);
   }
 
   updateView() {
     this.clear();
     // this.obj.pos[0] += 1;
-    
+    // const maze = this.maze;
     const ctx = this.ctx;
     this.obj.draw(ctx);
   }
 }
+
 
 module.exports = GameView;
 
@@ -266,94 +219,42 @@ GameView.MOVES = {
 }
 
 
-// ctx.getImageData();
-
-// var myGameArea = {
-//   canvas: document.createElement("canvas"),
-//   start: function () {
-//     this.canvas.width = 480;
-//     this.canvas.height = 270;
-//     this.context = this.canvas.getContext("2d");
-//     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-//     this.interval = setInterval(updateGameArea, 20);
-//   },
-//   clear: function () {
-//     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-//   }
-// }
 
 
 // class GameView {
-//   constructor(gamePiece) {
-//     this.canvas = document.getElementById("maze");
-//     this.ctx = this.canvas.getContext('2d');
-//     this.interval;
-//     this.gamePiece = gamePiece;
-
-//     // this.clear = this.clear.bind(this);
-//   }
-
-//   start() {
-//     let obj = this.gamePiece;
-//     let updateView = this.updateView;
-//     setInterval(updateView(obj), 20);
-//   }
-
-//   clear() {
-//     let width = this.canvas.width;
-//     let height = this.canvas.height;
-//     this.ctx.clearRect(0, 0, width, height);
-//   }
-
-//   updateView(obj) {
-//     let canvas = document.getElementById("maze");
-//     let width = canvas.width;
-//     let height = canvas.height;
-//     let ctx = canvas.getContext('2d');
-//     ctx.clearRect(0, 0, width, height);
-
-//     obj.pos[0] += 1;
-//     console.log(obj.pos);
-//     obj.update(ctx);
-//   }
-// }
-
-
-
-
-// class GameView {
-//   constructor(game, ctx) {
+//   constructor(canvas, ctx) {
+//     this.canvas = canvas;
 //     this.ctx = ctx;
-//     this.game = game;
-//     this.player = this.game.player;
 //   }
 
-//   bindKeyHandlers() {
-//     const player = this.player;
+//   bindKeyHandlers(obj) {
 
 //     Object.keys(GameView.MOVES).forEach((k) => {
 //       const delta = GameView.MOVES[k];
-//       key(k, () => { player.move(delta) })
+//       key(k, () => { obj.move(delta) })
 //     })
 //   }
 
-//   start(delta) {
-//     this.bindKeyHandlers();
-//     const game = this.game;
+//   clear() {
 //     const ctx = this.ctx;
-//     setInterval(() => {
-//       game.moveObjects(delta);
-//       game.draw(ctx);
-//     }, 20);
-//     // requestAnimationFrame(this.animate.bind(this))
+//     const canvas = this.canvas;
+//     const width = canvas.width;
+//     const height = canvas.height;
+
+//     ctx.clearRect(0, 0, width, height);
 //   }
 
-//   animate() {
-//     this.game.step(delta)
-//     this.game.draw(this.ctx);
-//     requestAnimationFrame(this.animate.bind(this));
+//   updateView(obj) {
+//     // const view = this.view;
+//     // view.clear();
+//     this.clear();
+
+//     // const obj = this.obj;
+//     const ctx = this.ctx;
+//     obj.draw(ctx);
 //   }
 // }
+
 
 /***/ }),
 
@@ -365,7 +266,7 @@ GameView.MOVES = {
 /***/ (function(module, exports, __webpack_require__) {
 
 const Maze = __webpack_require__(/*! ./maze */ "./src/maze.js");
-const drawMaze = __webpack_require__(/*! ./draw_maze */ "./src/draw_maze.js");
+// const drawMaze = require("./draw_maze");
 const MovingObject = __webpack_require__(/*! ./moving_object */ "./src/moving_object.js");
 const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
 const Game = __webpack_require__(/*! ./game */ "./src/game.js");
@@ -376,13 +277,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let h = 750;
   const canvas = document.getElementById("maze");
   const ctx = canvas.getContext('2d');
-  const maze = new Maze(n);
-  drawMaze(maze, ctx, n, w, h);
+  // const maze = new Maze(n);
+  // maze.drawMaze(ctx, n, w, h);
+  // drawMaze(maze, ctx, n, w, h);
 
   obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
-  view = new GameView(canvas, ctx, obj);
-  game = new Game(view, obj);
-  // view.start();
+  view = new GameView(canvas, ctx, obj, n);
+  // game = new Game(obj, view);
+  view.start();
+  // game.start();
 })
 
 /***/ }),
@@ -401,7 +304,7 @@ class Maze {
     this.totalCellCount = n * n;
     this.cells = [];
     this.unvisited = [];
-
+    this.n = n;
 
     this.newMaze(n);
 
@@ -491,11 +394,161 @@ class Maze {
     // add cell to path
     this.path.push(this.currCell);
   }
+
+  drawMaze(ctx, n, w, h) {
+    const inc = w / n;
+    const cells = this.cells;
+
+    for (let i = 0; i < n; i++) {
+      let row = cells[i];
+
+      for (let j = 0; j < n; j++) {
+        let cell = row[j];
+
+        let y = i * inc;
+        let x = j * inc;
+
+        ctx.lineWidth = 5;
+        ctx.lineCap = "round";
+
+        if (cell[0] === 0) {
+          ctx.moveTo(x, y);
+          ctx.lineTo(x + inc, y);
+          ctx.stroke();
+        }
+
+        if (cell[1] === 0) {
+          ctx.moveTo(x + inc, y);
+          ctx.lineTo(x + inc, y + inc);
+          ctx.stroke();
+        }
+
+        if (cell[2] === 0) {
+          ctx.moveTo(x, y + inc);
+          ctx.lineTo(x + inc, y + inc);
+          ctx.stroke();
+        }
+
+        if (cell[3] === 0) {
+          ctx.moveTo(x, y);
+          ctx.lineTo(x, y + inc);
+          ctx.stroke();
+        }
+      }
+    }
+  }
 }
 
 module.exports = Maze;
 
 
+
+
+
+
+
+
+
+
+
+// class Maze {
+//   constructor(n) {
+//     this.totalCellCount = n * n;
+//     this.cells = [];
+//     this.unvisited = [];
+
+
+//     this.newMaze(n);
+
+//     this.path = []; // path of visited cell coordinates
+//     this.countVisited = 0;
+//     this.currCell;
+//     this.selectStart(n);
+//     this.next;
+//     this.run(n);
+//   }
+
+//   newMaze(n) {
+//     for (let i = 0; i < n; i++) {
+//       this.cells[i] = []; // [ [], [], [] ]
+//       this.unvisited[i] = []; // [ [], [], [] ]
+//       for (let j = 0; j < n; j++) {
+//         this.cells[i][j] = [0, 0, 0, 0];    // [ [ [0,0,0,0], [0,0,0,0], [0,0,0,0] ],       [ [ [true], [true], [true] ],
+//         this.unvisited[i][j] = true;        //   [ [0,0,0,0], [0,0,0,0], [0,0,0,0] ],         [ [true], [true], [true] ],
+//       }                                     //   [ [0,0,0,0], [0,0,0,0], [0,0,0,0] ]  ]       [ [true], [true], [true] ]  ]
+//     }
+//   }
+
+//   selectStart(n) {
+//     let x = Math.floor(Math.random() * n);
+//     let y = Math.floor(Math.random() * n);
+//     let coords = [y, x]
+//     this.path.push(coords);
+//     // [ [y, x] ]
+
+//     this.unvisited[y][x] = false;
+//     this.countVisited += 1;
+//     this.currCell = coords;
+
+//   }
+
+
+//   // [top, right, bottom, left]
+//   // [yCoord, xCoord, wallCurrent, wallNeighbor]
+
+//   run(n) { // REMEBER TO PASS N
+//     while (this.countVisited < this.totalCellCount) {
+
+//       let possible = [
+//         [this.currCell[0] - 1, this.currCell[1], 0, 2], // top
+//         [this.currCell[0], this.currCell[1] + 1, 1, 3], // right
+//         [this.currCell[0] + 1, this.currCell[1], 2, 0], // bottom
+//         [this.currCell[0], this.currCell[1] - 1, 3, 1] // left 
+//       ];
+
+//       let neighbors = [];
+
+//       for (let i = 0; i < 4; i++) {
+//         if (possible[i][0] > -1 &&  // making sure its in bounds
+//           possible[i][0] < n &&
+//           possible[i][1] > -1 &&
+//           possible[i][1] < n &&
+//           this.unvisited[possible[i][0]][possible[i][1]]) {// if true, hasn't been visited
+
+//           neighbors.push(possible[i]); // if all condition met, valid neighbor
+//         }
+//       }
+
+//       // now check to make sure at least one neighbor, otherwise its a dead end
+//       if (neighbors.length > 0) {
+//         // if there's a valid neighbor, randomly select one
+//         this.pickNext(neighbors);
+//         // this.next = neighbors[ Math.floor( Math.random() * neighbors.length ) ];
+//       } else {
+//         this.currCell = this.path.pop(); // if no valid neighbor, backtrack to last cell
+//       }
+//     }
+
+//     return this.cells;
+//   }
+
+
+//   pickNext(neighbors) {
+//     // randomly select neighbor
+//     this.next = neighbors[Math.floor(Math.random() * neighbors.length)];
+//     // remove wall of currCell and chosen neighbor, 1 signifies there is no wall
+//     this.cells[this.currCell[0]][this.currCell[1]][this.next[2]] = 1 // knock down currCell wall => this.cells[currY][currX][currCellWall]
+//     this.cells[this.next[0]][this.next[1]][this.next[3]] = 1 // knock down currCell wall => this.cells[neighY][neighX][neighCellWall]
+//     // mark next as visitied, increment counter, and set current to next
+//     this.unvisited[this.next[0]][this.next[1]] = false;
+//     this.countVisited += 1;
+//     this.currCell = [this.next[0], this.next[1]];
+//     // add cell to path
+//     this.path.push(this.currCell);
+//   }
+// }
+
+// module.exports = Maze;
 
 /***/ }),
 
