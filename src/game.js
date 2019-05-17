@@ -6,8 +6,19 @@ class Game {
   constructor(n, canvas, ctx) {
     this.obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
     const obj = this.obj;
-    this.view = new GameView(canvas, ctx, obj, n);
-    this.maze = new Maze(n)
+    
+    const width = canvas.width;
+    const height = canvas.height;
+    
+    this.maze = new Maze(n);
+    this.maze.drawMaze(ctx, n, width, height);
+
+    this.ctx = ctx;
+    this.canvas = canvas;
+    this.n = n;
+    
+    const mazeImage = this.toImage();
+    this.view = new GameView(canvas, ctx, obj, mazeImage);
   }
 
   start() {
@@ -16,9 +27,16 @@ class Game {
     view.start();
   }
 
+  toImage() {
+    const canvas = this.canvas;
+    const data = canvas.toDataURL();
+    const img = document.createElement("img");
+    img.src = data;
+    return img;
+  }
+
 }
   
-
 
 module.exports = Game;
 

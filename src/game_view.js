@@ -1,11 +1,12 @@
 // const Maze = require("./maze");
 
 class GameView {
-  constructor(canvas, ctx, obj) {
+  constructor(canvas, ctx, obj, mazeImage) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.obj = obj;
-    // this.maze = new Maze(n);
+    this.mazeImage = mazeImage;
+
   }
 
   start() {
@@ -29,18 +30,22 @@ class GameView {
     const height = canvas.height;
 
     ctx.clearRect(0, 0, width, height);
-    // const maze = this.maze;
-    // const n = maze.n;
-    // maze.drawMaze(ctx, n, width, height);
+    this.drawBackground();
+
   }
 
   updateView() {
     this.clear();
-    // this.obj.pos[0] += 1;
-    // const maze = this.maze;
+
     const ctx = this.ctx;
     this.obj.draw(ctx);
   }
+
+  drawBackground() {
+
+    this.ctx.drawImage(this.mazeImage, 0, 0);
+  }
+
 }
 
 

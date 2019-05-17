@@ -5,7 +5,7 @@ const GameView = require("./game_view");
 const Game = require("./game");
 
 document.addEventListener("DOMContentLoaded", () => {
-  let n = 15;
+  let n = 10;
   let w = 750;
   let h = 750;
   const canvas = document.getElementById("maze");
@@ -19,4 +19,5 @@ document.addEventListener("DOMContentLoaded", () => {
   game = new Game(n, canvas, ctx);
   // view.start();
   game.start();
+  // game.toImage();
 })

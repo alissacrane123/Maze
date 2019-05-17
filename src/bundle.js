@@ -101,8 +101,19 @@ class Game {
   constructor(n, canvas, ctx) {
     this.obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
     const obj = this.obj;
-    this.view = new GameView(canvas, ctx, obj, n);
-    this.maze = new Maze(n)
+    
+    const width = canvas.width;
+    const height = canvas.height;
+    
+    this.maze = new Maze(n);
+    this.maze.drawMaze(ctx, n, width, height);
+
+    this.ctx = ctx;
+    this.canvas = canvas;
+    this.n = n;
+    
+    const mazeImage = this.toImage();
+    this.view = new GameView(canvas, ctx, obj, mazeImage);
   }
 
   start() {
@@ -111,9 +122,16 @@ class Game {
     view.start();
   }
 
+  toImage() {
+    const canvas = this.canvas;
+    const data = canvas.toDataURL();
+    const img = document.createElement("img");
+    img.src = data;
+    return img;
+  }
+
 }
   
-
 
 module.exports = Game;
 
@@ -170,11 +188,12 @@ module.exports = Game;
 // const Maze = require("./maze");
 
 class GameView {
-  constructor(canvas, ctx, obj) {
+  constructor(canvas, ctx, obj, mazeImage) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.obj = obj;
-    // this.maze = new Maze(n);
+    this.mazeImage = mazeImage;
+
   }
 
   start() {
@@ -198,18 +217,22 @@ class GameView {
     const height = canvas.height;
 
     ctx.clearRect(0, 0, width, height);
-    // const maze = this.maze;
-    // const n = maze.n;
-    // maze.drawMaze(ctx, n, width, height);
+    this.drawBackground();
+
   }
 
   updateView() {
     this.clear();
-    // this.obj.pos[0] += 1;
-    // const maze = this.maze;
+
     const ctx = this.ctx;
     this.obj.draw(ctx);
   }
+
+  drawBackground() {
+
+    this.ctx.drawImage(this.mazeImage, 0, 0);
+  }
+
 }
 
 
@@ -277,7 +300,7 @@ const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
 const Game = __webpack_require__(/*! ./game */ "./src/game.js");
 
 document.addEventListener("DOMContentLoaded", () => {
-  let n = 15;
+  let n = 10;
   let w = 750;
   let h = 750;
   const canvas = document.getElementById("maze");
@@ -291,6 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
   game = new Game(n, canvas, ctx);
   // view.start();
   game.start();
+  // game.toImage();
 })
 
 /***/ }),
