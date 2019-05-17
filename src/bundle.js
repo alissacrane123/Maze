@@ -91,19 +91,24 @@
   !*** ./src/game.js ***!
   \*********************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+const Maze = __webpack_require__(/*! ./maze */ "./src/maze.js");
+const MovingObject = __webpack_require__(/*! ./moving_object */ "./src/moving_object.js");
+const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
 
 class Game {
-  constructor(obj, view) {
-    this.obj = obj;
-    this.view = view;
+  constructor(n, canvas, ctx) {
+    this.obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
+    const obj = this.obj;
+    this.view = new GameView(canvas, ctx, obj, n);
+    this.maze = new Maze(n)
   }
 
   start() {
     const obj = this.obj;
     const view = this.view;
-    view.bindKeyHandlers(obj);
-    setInterval(view.updateView(obj), 20);
+    view.start();
   }
 
 }
@@ -160,16 +165,16 @@ module.exports = Game;
   !*** ./src/game_view.js ***!
   \**************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-const Maze = __webpack_require__(/*! ./maze */ "./src/maze.js");
+// const Maze = require("./maze");
 
 class GameView {
-  constructor(canvas, ctx, obj, n) {
+  constructor(canvas, ctx, obj) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.obj = obj;
-    this.maze = new Maze(n);
+    // this.maze = new Maze(n);
   }
 
   start() {
@@ -193,9 +198,9 @@ class GameView {
     const height = canvas.height;
 
     ctx.clearRect(0, 0, width, height);
-    const maze = this.maze;
-    const n = maze.n;
-    maze.drawMaze(ctx, n, width, height);
+    // const maze = this.maze;
+    // const n = maze.n;
+    // maze.drawMaze(ctx, n, width, height);
   }
 
   updateView() {
@@ -281,11 +286,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // maze.drawMaze(ctx, n, w, h);
   // drawMaze(maze, ctx, n, w, h);
 
-  obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
-  view = new GameView(canvas, ctx, obj, n);
-  // game = new Game(obj, view);
-  view.start();
-  // game.start();
+  // obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
+  // view = new GameView(canvas, ctx, obj, n);
+  game = new Game(n, canvas, ctx);
+  // view.start();
+  game.start();
 })
 
 /***/ }),

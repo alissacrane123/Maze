@@ -1,11 +1,11 @@
-const Maze = require("./maze");
+// const Maze = require("./maze");
 
 class GameView {
-  constructor(canvas, ctx, obj, n) {
+  constructor(canvas, ctx, obj) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.obj = obj;
-    this.maze = new Maze(n);
+    // this.maze = new Maze(n);
   }
 
   start() {
@@ -29,9 +29,9 @@ class GameView {
     const height = canvas.height;
 
     ctx.clearRect(0, 0, width, height);
-    const maze = this.maze;
-    const n = maze.n;
-    maze.drawMaze(ctx, n, width, height);
+    // const maze = this.maze;
+    // const n = maze.n;
+    // maze.drawMaze(ctx, n, width, height);
   }
 
   updateView() {

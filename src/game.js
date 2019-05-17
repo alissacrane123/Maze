@@ -1,14 +1,19 @@
+const Maze = require("./maze");
+const MovingObject = require("./moving_object");
+const GameView = require("./game_view");
+
 class Game {
-  constructor(obj, view) {
-    this.obj = obj;
-    this.view = view;
+  constructor(n, canvas, ctx) {
+    this.obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
+    const obj = this.obj;
+    this.view = new GameView(canvas, ctx, obj, n);
+    this.maze = new Maze(n)
   }
 
   start() {
     const obj = this.obj;
     const view = this.view;
-    view.bindKeyHandlers(obj);
-    setInterval(view.updateView(obj), 20);
+    view.start();
   }
 
 }

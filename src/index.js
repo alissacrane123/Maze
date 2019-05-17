@@ -14,9 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // maze.drawMaze(ctx, n, w, h);
   // drawMaze(maze, ctx, n, w, h);
 
-  obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
-  view = new GameView(canvas, ctx, obj, n);
-  // game = new Game(obj, view);
-  view.start();
-  // game.start();
+  // obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
+  // view = new GameView(canvas, ctx, obj, n);
+  game = new Game(n, canvas, ctx);
+  // view.start();
+  game.start();
 })
