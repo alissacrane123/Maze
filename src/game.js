@@ -4,7 +4,7 @@ const GameView = require("./game_view");
 
 class Game {
   constructor(n, canvas, ctx) {
-    this.obj = new MovingObject({ pos: [10, 10], vel: [10, 10], width: 40, height: 40, color: "#f00" });
+    this.obj = new MovingObject({ pos: [10, 10], vel: [10, 10], width: 30, height: 30, color: "#f00" });
 
     const obj = this.obj;
     

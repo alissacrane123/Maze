@@ -8,18 +8,21 @@ class MovingObject {
     this.width = object.width;
     this.color = object.color;
     this.move = this.move.bind(this);
-    // this.validMove = this.validMove.bind(this);
-    // this.ctx.fillStyle = this.color;
-    // this.ctx.fillRect = (this.pos[0], this.pos[1], this.width, this.height)
+
   }
 
+  // U+1F47B
+
   draw(ctx) {
-    // debugger
-    
-    // ctx.fillStyle = this.color;
-    // debugger
+
+    // let code = "U+1F47B";
+
+
+
+
+    ctx.fillStyle = this.color;
     ctx.beginPath();
-    ctx.rect(this.pos[0], this.pos[1], 40, 40);
+    ctx.rect(this.pos[0], this.pos[1], this.width, this.height);
     ctx.fillStyle = "red";
     ctx.fill();
   }

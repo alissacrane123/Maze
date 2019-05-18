@@ -99,7 +99,7 @@ const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
 
 class Game {
   constructor(n, canvas, ctx) {
-    this.obj = new MovingObject({ pos: [10, 10], vel: [10, 10], width: 40, height: 40, color: "#f00" });
+    this.obj = new MovingObject({ pos: [10, 10], vel: [10, 10], width: 30, height: 30, color: "#f00" });
 
     const obj = this.obj;
     
@@ -360,7 +360,7 @@ const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
 const Game = __webpack_require__(/*! ./game */ "./src/game.js");
 
 document.addEventListener("DOMContentLoaded", () => {
-  let n = 10;
+  let n = 15;
   let w = 750;
   let h = 750;
   const canvas = document.getElementById("maze");
@@ -658,18 +658,21 @@ class MovingObject {
     this.width = object.width;
     this.color = object.color;
     this.move = this.move.bind(this);
-    // this.validMove = this.validMove.bind(this);
-    // this.ctx.fillStyle = this.color;
-    // this.ctx.fillRect = (this.pos[0], this.pos[1], this.width, this.height)
+
   }
 
+  // U+1F47B
+
   draw(ctx) {
-    // debugger
-    
-    // ctx.fillStyle = this.color;
-    // debugger
+
+    // let code = "U+1F47B";
+
+
+
+
+    ctx.fillStyle = this.color;
     ctx.beginPath();
-    ctx.rect(this.pos[0], this.pos[1], 40, 40);
+    ctx.rect(this.pos[0], this.pos[1], this.width, this.height);
     ctx.fillStyle = "red";
     ctx.fill();
   }
