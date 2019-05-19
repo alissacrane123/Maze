@@ -6,19 +6,29 @@
 
   <link rel="stylesheet" type="text/css" href="./css/style.css">
   <script src="keymaster.js"></script>
+  <!-- <script type="application/javascript" src="./src/modal.js"></script> -->
   <script type="application/javascript" src="./src/bundle.js"></script>
 </head>
 <body>
+  
+  <div class="is-hidden modal-overlay">
+    <div class="modal">
+      <span class="button-close">
+        <button class="new-game">New Game</button>
+      </span>
+    </div>
+  </div>
+  
   <div class="main-content-container">
     <div class="navbar-container">
       <div class="header-container">
         <div class="header">Maze</div>
       </div>
-
+      <button class="modal-button" onclick="openModal()">MENU</button>
     </div>
-
-    <canvas style="background:rgb(146, 146, 236)" id="maze" width="750" height="750"></canvas>
-
+    
+    <canvas style="background:rgb(146, 146, 236)" id="maze" width="700" height="700"></canvas>
+    
   </div>
 </body>
 </html>

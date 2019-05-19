@@ -99,7 +99,7 @@ const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
 
 class Game {
   constructor(n, canvas, ctx) {
-    this.obj = new MovingObject({ pos: [10, 10], vel: [10, 10], width: 30, height: 30, color: "#f00" });
+    this.obj = new MovingObject({ pos: [10, 10], vel: [5, 5], width: 20, height: 20, color: "#f00" });
 
     const obj = this.obj;
     
@@ -358,22 +358,23 @@ const Maze = __webpack_require__(/*! ./maze */ "./src/maze.js");
 const MovingObject = __webpack_require__(/*! ./moving_object */ "./src/moving_object.js");
 const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
 const Game = __webpack_require__(/*! ./game */ "./src/game.js");
+const Modal = __webpack_require__(/*! ./modal */ "./src/modal.js");
 
 document.addEventListener("DOMContentLoaded", () => {
   let n = 15;
   let w = 750;
   let h = 750;
+
+  const overlay = document.querySelector('.modal-overlay');
+  const modal = new Modal(overlay);
+  window.openModal = modal.open.bind(modal);
+  window.openModal();
+
   const canvas = document.getElementById("maze");
   const ctx = canvas.getContext('2d');
-  // const maze = new Maze(n);
-  // maze.drawMaze(ctx, n, w, h);
-  // drawMaze(maze, ctx, n, w, h);
-
-  // obj = new MovingObject({ pos: [50, 50], vel: [10, 10], width: 40, height: 40, color: "#f00" });
-  // view = new GameView(canvas, ctx, obj, n);
   game = new Game(n, canvas, ctx);
-  // view.start();
   game.start();
+
   // game.toImage();
 })
 
@@ -638,6 +639,46 @@ module.exports = Maze;
 // }
 
 // module.exports = Maze;
+
+/***/ }),
+
+/***/ "./src/modal.js":
+/*!**********************!*\
+  !*** ./src/modal.js ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class Modal {
+  constructor(overlay) {
+    this.overlay = overlay;
+    const closeButton = overlay.querySelector('.button-close')
+
+    this.registerListeners(closeButton);
+  }
+
+  open() {
+    this.overlay.classList.remove('is-hidden');
+  }
+
+  close() {
+    this.overlay.classList.add('is-hidden');
+  }
+
+  registerListeners(closeButton) {
+    closeButton.addEventListener('click', this.close.bind(this));
+
+    this.overlay.addEventListener('click', e => {
+      if (e.target.id === this.overlay.id) {
+        this.close();
+      }
+    });
+  }
+}
+
+module.exports = Modal;
+
+
 
 /***/ }),
 
