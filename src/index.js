@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("maze");
   const ctx = canvas.getContext('2d');
   game = new Game(n, canvas, ctx);
-  game.start();
+  game.newStart();
 
   // game.toImage();
 })

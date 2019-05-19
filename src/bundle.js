@@ -99,29 +99,52 @@ const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
 
 class Game {
   constructor(n, canvas, ctx) {
-    this.obj = new MovingObject({ pos: [10, 10], vel: [5, 5], width: 20, height: 20, color: "#f00" });
+    this.obj;
+    // this.obj = new MovingObject({ pos: [10, 10], vel: [5, 5], width: 20, height: 20, color: "#f00" });
 
     const obj = this.obj;
     
     const width = canvas.width;
     const height = canvas.height;
     
-    this.maze = new Maze(n);
-    this.maze.drawMaze(ctx, n, width, height);
+    this.maze;
+    // this.maze = new Maze(n);
+    // this.maze.drawMaze(ctx, n, width, height);
 
     this.ctx = ctx;
     this.canvas = canvas;
     this.n = n;
     
-    const mazeImage = this.toImage();
-    this.view = new GameView(canvas, ctx, obj, mazeImage);
+    // const mazeImage = this.toImage();
+    this.view;
+    // this.view = new GameView(canvas, ctx, obj, mazeImage);
+    // this.newStart(ctx, n, width, height)
   }
 
-  start() {
+  newStart() {
+    const ctx = this.ctx;
+    const canvas = this.canvas;
+    const n = this.n;
+    const width = canvas.width;
+    const height = canvas.height;
+
+    this.obj = new MovingObject({ pos: [10, 10], vel: [5, 5], width: 20, height: 20, color: "#f00" });
+    this.maze = new Maze(n);
+    this.maze.drawMaze(ctx, n, width, height);
+
     const obj = this.obj;
+    const mazeImage = this.toImage();
+    this.view = new GameView(canvas, ctx, obj, mazeImage);
+
     const view = this.view;
     view.start();
   }
+
+  // start() {
+  //   const obj = this.obj;
+  //   const view = this.view;
+  //   view.start();
+  // }
 
   toImage() {
     const canvas = this.canvas;
@@ -373,7 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("maze");
   const ctx = canvas.getContext('2d');
   game = new Game(n, canvas, ctx);
-  game.start();
+  game.newStart();
 
   // game.toImage();
 })
