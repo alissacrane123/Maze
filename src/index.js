@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // const interface = new Interface(ctx, canvas);
 
-  game = new Game(canvas, ctx, 15);
+  game = new Game(canvas, ctx, 20, 15);
   game.newStart();
 
   // window.nextLevel = interface.nextLevel.bind(interface);

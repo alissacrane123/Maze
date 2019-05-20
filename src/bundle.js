@@ -154,20 +154,21 @@ const Coin = __webpack_require__(/*! ./coins */ "./src/coins.js");
 const Score = __webpack_require__(/*! ./score */ "./src/score.js");
 
 class Game {
-  constructor(canvas, ctx, n) {
+  constructor(canvas, ctx, n, w) {
     this.obj;
     this.maze;
     this.view;
     this.ctx = ctx;
     this.canvas = canvas;
     this.n = n;
+    this.w = w;
     
     this.img = document.createElement("img");
   }
 
   newStart() {
     let canvas = this.canvas;
-    this.obj = new MovingObject({ pos: [10, 10], width: 20, height: 20, color: "red" });   
+    this.obj = new MovingObject({ pos: [10, 10], width: this.w, height: this.w, color: "red" });   
     this.maze = new Maze(this.n);
     this.maze.drawMaze(this.ctx, this.n, canvas.width, canvas.height);
     let obj = this.obj;
@@ -177,7 +178,7 @@ class Game {
       coins.push(new Coin(this.ctx, canvas, this.n, "yellow"))
     }
     coins.push(new Coin(this.ctx, canvas, this.n, "green"))
-    
+
     let score = new Score();
 
     let mazeImage = this.toImage();
@@ -408,7 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // const interface = new Interface(ctx, canvas);
 
-  game = new Game(canvas, ctx, 15);
+  game = new Game(canvas, ctx, 20, 15);
   game.newStart();
 
   // window.nextLevel = interface.nextLevel.bind(interface);
