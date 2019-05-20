@@ -50,33 +50,3 @@ class Game {
 
 module.exports = Game;
 
-
-// nextLevel() {
-//   this.n += 5;
-//   this.img.src = '#';
-
-//   debugger
-//   const ctx = this.ctx;
-//   const canvas = this.canvas;
-//   const n = this.n;
-//   const width = canvas.width;
-//   const height = canvas.height;
-
-//   ctx.clearRect(0, 0, width, height);
-//   debugger
-//   // this.obj = new MovingObject({ pos: [10, 10], vel: [5, 5], width: 20, height: 20, color: "#f00" });
-
-//   this.maze = new Maze(n);
-//   debugger
-//   this.maze.drawMaze(ctx, n, width, height);
-//   debugger
-//   const obj = this.obj;
-//   const mazeImage = this.toImage();
-//   // this.view = new GameView(canvas, ctx, obj, mazeImage);
-//   this.view.obj = obj;
-//   this.view.mazeImage = mazeImage;
-
-//   const view = this.view;
-//   debugger
-//   view.start();
-// }

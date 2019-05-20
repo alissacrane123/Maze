@@ -1,7 +1,15 @@
 class Score {
   constructor() {
     this.score = 0;
+    this.time = -1;
 
+    setInterval(this.addTime.bind(this), 1000);
+  }
+
+  addTime() {
+    this.time += 1;
+    let timer = document.getElementById('timer');
+    timer.innerHTML = this.time;
   }
 
   addPoint() {

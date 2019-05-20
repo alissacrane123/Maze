@@ -200,35 +200,6 @@ class Game {
 module.exports = Game;
 
 
-// nextLevel() {
-//   this.n += 5;
-//   this.img.src = '#';
-
-//   debugger
-//   const ctx = this.ctx;
-//   const canvas = this.canvas;
-//   const n = this.n;
-//   const width = canvas.width;
-//   const height = canvas.height;
-
-//   ctx.clearRect(0, 0, width, height);
-//   debugger
-//   // this.obj = new MovingObject({ pos: [10, 10], vel: [5, 5], width: 20, height: 20, color: "#f00" });
-
-//   this.maze = new Maze(n);
-//   debugger
-//   this.maze.drawMaze(ctx, n, width, height);
-//   debugger
-//   const obj = this.obj;
-//   const mazeImage = this.toImage();
-//   // this.view = new GameView(canvas, ctx, obj, mazeImage);
-//   this.view.obj = obj;
-//   this.view.mazeImage = mazeImage;
-
-//   const view = this.view;
-//   debugger
-//   view.start();
-// }
 
 /***/ }),
 
@@ -407,12 +378,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("maze");
   const ctx = canvas.getContext('2d');
 
-  // const interface = new Interface(ctx, canvas);
-
-  game = new Game(canvas, ctx, 20, 15);
+  game = new Game(canvas, ctx, 15, 20);
   game.newStart();
-
-  // window.nextLevel = interface.nextLevel.bind(interface);
 
 })
 
@@ -813,7 +780,15 @@ module.exports = MovingObject;
 class Score {
   constructor() {
     this.score = 0;
+    this.time = -1;
 
+    setInterval(this.addTime.bind(this), 1000);
+  }
+
+  addTime() {
+    this.time += 1;
+    let timer = document.getElementById('timer');
+    timer.innerHTML = this.time;
   }
 
   addPoint() {
