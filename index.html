@@ -11,10 +11,16 @@
 </head>
 <body>
   
-  <div class="is-hidden modal-overlay">
-    <div class="modal">
-      <span class="button-close">
-        <button class="new-game">New Game</button>
+  <div id="modal" class="is-hidden modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div id="modal-header" class="header">The Maze Game</div>
+      </div>
+
+      <button id="new-game" onclick="window.location.reload()" class="is-hidden new-game">PLAY AGAIN</button>
+
+      <span id="start" class=" button-close">
+        <button id="start2" class=" start">START</button>
       </span>
     </div>
   </div>
@@ -24,11 +30,25 @@
       <div class="header-container">
         <div class="header">Maze</div>
       </div>
-      <button class="modal-button" onclick="openModal()">MENU</button>
+      <!-- <button class="modal-button" onclick="openModal()">MENU</button> -->
     </div>
-    
-    <canvas style="background:rgb(146, 146, 236)" id="maze" width="700" height="700"></canvas>
-    
+
+    <div class="content-container">
+      <div class="score-container2">
+        <div class="coins-container">
+          <div class="coins-header">Coins Collected</div>
+          <div id="coins" class="coins">0</div>
+        </div>
+      </div>
+
+      <!-- <img id="image" width="40" height="40" src="ghost.png"> -->
+      <canvas style="background:rgb(146, 146, 236)" id="maze" width="700" height="700"></canvas>
+      
+      <div class="button-container">
+        <button onclick="window.location.reload()" class="reload">NEW MAZE</button>
+        <!-- <button class="level-button" onclick="nextLevel()">NEXT LEVEL</button> -->
+      </div>
+    </div>
   </div>
 </body>
 </html>

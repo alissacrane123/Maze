@@ -5,20 +5,16 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background:  rgb(248, 199, 248);
 }
+
+
 
 .main-content-container {
   display: flex;
   flex-direction: column;
   align-content: center;
-}
-
-canvas {
-  margin-top: 105px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 5px solid black;
-  border-radius: 3px;
+  height: 100%;
 }
 
 .navbar-container {
@@ -49,13 +45,13 @@ canvas {
 }
 
 .header-container {
-  position: absolute;
-  left: 42%;
+  /* position: absolute; */
+  /* left: 42%; */
   display: inline-block;
   height: 100%;
   width: 230px;
-  /* margin-left: auto; */
-  /* margin-right: auto; */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .header {
@@ -66,7 +62,68 @@ canvas {
   font-weight: bolder;
 }
 
+.content-container {
+  margin-top: 90px;
+  display: flex;
+  flex-direction: row;
+}
 
+.coins-container {
+  width: 200px;
+  height: 100px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 4px;
+  background: white;
+  outline: none;
+  border: 8px solid rgb(128, 204, 240);
+  color: rgb(146, 146, 236);
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.coins-header {
+  text-align: center;
+  padding-bottom: 5px;
+  border-bottom: 2px solid rgb(128, 204, 240);
+}
+
+.coins {
+  height: 50px;
+  margin-top: 10px;
+  font-size: 25px;
+  text-align: center;
+}
+
+canvas {
+  margin-top: 25px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 5px solid black;
+  border-radius: 3px;
+}
+
+.button-container, .score-container2 {
+  width: 20%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reload {
+  width: 200px;
+  height: 90px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 4px;
+  background: white;
+  outline: none;
+  border: 8px solid rgb(128, 204, 240);
+  color: rgb(146, 146, 236);
+  font-weight: bolder;
+  font-size: 20px;
+}
 /* Modal Content */
 
 .is-hidden {
@@ -83,16 +140,25 @@ canvas {
   z-index: 99
 }
 
-.modal {
+.modal-container {
   height: 100%;
   width: 100%;
   background: purple;
   z-index: 9999;
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.button-close {
+.modal-header {
+  position: absolute;
+  top: 90px;
+  height: 200px;
+}
+
+.button-close, .new-game {
+    position: absolute;
+    top: 400px;
     width: 200px;
     height: 90px;
     cursor: pointer;
@@ -100,9 +166,16 @@ canvas {
     margin-right: auto;
 }
 
-.new-game {
+.start, .new-game {
   height: 90px;
   width: 200px;
   border-radius: 4px;
+
+  background: white;
+  outline: none;
+  border: 8px solid rgb(128, 204, 240);
+  color: rgb(146, 146, 236);
+  font-weight: bolder;
+  font-size: 20px;
 }
 

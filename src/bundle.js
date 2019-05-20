@@ -86,6 +86,60 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/coins.js":
+/*!**********************!*\
+  !*** ./src/coins.js ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class Coin {
+  constructor(ctx, canvas, n, color) {
+    this.ctx = ctx;
+    this.canvas = canvas;
+    this.n = n
+    this.width = 15;
+    this.height = 15;
+    this.color = color;
+
+    this.pos;
+
+    if (color === 'green') {
+      this.pos = [670, 670];
+    } else {
+      this.selectPos(ctx, canvas);
+    }
+
+    let pos = this.pos;
+    if (pos[0] === 10 && pos[1] === 10) {
+      this.selectPos(ctx, canvas);
+    }
+  }
+
+  selectPos(ctx, canvas) {
+    let inc = canvas.width / this.n;
+    let numX = Math.floor(Math.random() * (this.n  - 1));
+    let x = 10 + (inc * numX);
+    let numY = Math.floor(Math.random() * (this.n - 1));
+    let y = 10 + (inc * numY);
+    this.pos = [x, y];
+  }
+
+  draw(ctx) {
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.rect(this.pos[0], this.pos[1], this.width, this.height);
+    // square.classList.add("hero");
+    // let img = document.getElementById("image");
+    // ctx.drawImage(img, this.pos[0], this.pos[1], 30, 30);
+    ctx.fill();
+  }
+}
+
+module.exports = Coin;
+
+/***/ }),
+
 /***/ "./src/game.js":
 /*!*********************!*\
   !*** ./src/game.js ***!
@@ -96,64 +150,47 @@
 const Maze = __webpack_require__(/*! ./maze */ "./src/maze.js");
 const MovingObject = __webpack_require__(/*! ./moving_object */ "./src/moving_object.js");
 const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
+const Coin = __webpack_require__(/*! ./coins */ "./src/coins.js");
+const Score = __webpack_require__(/*! ./score */ "./src/score.js");
 
 class Game {
-  constructor(n, canvas, ctx) {
+  constructor(canvas, ctx, n) {
     this.obj;
-    // this.obj = new MovingObject({ pos: [10, 10], vel: [5, 5], width: 20, height: 20, color: "#f00" });
-
-    const obj = this.obj;
-    
-    const width = canvas.width;
-    const height = canvas.height;
-    
     this.maze;
-    // this.maze = new Maze(n);
-    // this.maze.drawMaze(ctx, n, width, height);
-
+    this.view;
     this.ctx = ctx;
     this.canvas = canvas;
     this.n = n;
     
-    // const mazeImage = this.toImage();
-    this.view;
-    // this.view = new GameView(canvas, ctx, obj, mazeImage);
-    // this.newStart(ctx, n, width, height)
+    this.img = document.createElement("img");
   }
 
   newStart() {
-    const ctx = this.ctx;
-    const canvas = this.canvas;
-    const n = this.n;
-    const width = canvas.width;
-    const height = canvas.height;
+    let canvas = this.canvas;
+    this.obj = new MovingObject({ pos: [10, 10], width: 20, height: 20, color: "red" });   
+    this.maze = new Maze(this.n);
+    this.maze.drawMaze(this.ctx, this.n, canvas.width, canvas.height);
+    let obj = this.obj;
 
-    this.obj = new MovingObject({ pos: [10, 10], vel: [5, 5], width: 20, height: 20, color: "#f00" });
-    this.maze = new Maze(n);
-    this.maze.drawMaze(ctx, n, width, height);
+    let coins = [];
+    for (let i = 0; i < 10; i++) {
+      coins.push(new Coin(this.ctx, canvas, this.n, "yellow"))
+    }
+    coins.push(new Coin(this.ctx, canvas, this.n, "green"))
+    
+    let score = new Score();
 
-    const obj = this.obj;
-    const mazeImage = this.toImage();
-    this.view = new GameView(canvas, ctx, obj, mazeImage);
-
-    const view = this.view;
+    let mazeImage = this.toImage();
+    this.view = new GameView(canvas, this.ctx, obj, mazeImage, coins, score);
+    let view = this.view;
     view.start();
   }
 
-  // start() {
-  //   const obj = this.obj;
-  //   const view = this.view;
-  //   view.start();
-  // }
-
   toImage() {
-    const canvas = this.canvas;
-    // debugger
-    const data = canvas.toDataURL();
-    const img = document.createElement("img");
-    img.src = data;
-    
-    return img;
+    let canvas = this.canvas;
+    let data = canvas.toDataURL();
+    this.img.src = data;
+    return this.img;
   }
 
 }
@@ -162,44 +199,34 @@ class Game {
 module.exports = Game;
 
 
-// GameView.MOVES = {
-//   up: [0, -10],
-//   left: [-10, 0],
-//   down: [0, 10],
-//   right: [10, 0]
-// }
+// nextLevel() {
+//   this.n += 5;
+//   this.img.src = '#';
 
+//   debugger
+//   const ctx = this.ctx;
+//   const canvas = this.canvas;
+//   const n = this.n;
+//   const width = canvas.width;
+//   const height = canvas.height;
 
+//   ctx.clearRect(0, 0, width, height);
+//   debugger
+//   // this.obj = new MovingObject({ pos: [10, 10], vel: [5, 5], width: 20, height: 20, color: "#f00" });
 
+//   this.maze = new Maze(n);
+//   debugger
+//   this.maze.drawMaze(ctx, n, width, height);
+//   debugger
+//   const obj = this.obj;
+//   const mazeImage = this.toImage();
+//   // this.view = new GameView(canvas, ctx, obj, mazeImage);
+//   this.view.obj = obj;
+//   this.view.mazeImage = mazeImage;
 
-
-
-// class Game {
-//   constructor(player) {
-//     this.player = player;
-//   }
-
-//   updateView() {
-//     this.view.clear();
-//     this.obj.pos[0] += 1;
-//     this.obj.update();
-//   }
-
-//   draw(ctx, canvas) {
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-//     ctx.fillStyle = "blue";
-//     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-//     this.player.draw(ctx);
-//   }
-
-//   moveObjects(delta) {
-//     this.player.move(delta);
-//   }
-
-//   step(delta) {
-//     this.moveObjects(delta);
-//   }
+//   const view = this.view;
+//   debugger
+//   view.start();
 // }
 
 /***/ }),
@@ -214,13 +241,13 @@ module.exports = Game;
 // const Maze = require("./maze");
 
 class GameView {
-  constructor(canvas, ctx, obj, mazeImage) {
+  constructor(canvas, ctx, obj, mazeImage, coins, score) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.obj = obj;
-    this.mazeImage = mazeImage;
-
-    
+    this.mazeImage = mazeImage;  
+    this.coins = coins;  
+    this.score = score;
   }
 
   start() {
@@ -229,43 +256,37 @@ class GameView {
   }
 
   bindKeyHandlers() {
-    const ctx = this.ctx;
-    const obj = this.obj;
-    const height = this.canvas.height;
-    const width = this.canvas.width;
+    let ctx = this.ctx;
+    let obj = this.obj;
+    let height = this.canvas.height;
+    let width = this.canvas.width;
     this.validMove = this.validMove.bind(this);
 
     Object.keys(GameView.MOVES).forEach((k) => {
       const delta = GameView.MOVES[k];
       key(k, () => { 
-        // debugger
         this.validMove(delta, k, height, width, obj)
-        // obj.move(delta, k, height, width);        
       })
     })
   }
 
   clear() {
-    const ctx = this.ctx;
-    const canvas = this.canvas;
-    const width = canvas.width;
-    const height = canvas.height;
-    
-    ctx.clearRect(0, 0, width, height);
-   
+    let ctx = this.ctx;
+    let canvas = this.canvas;   
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
     this.drawBackground();
-    // debugger;
+    this.coins.forEach(coin => coin.draw(ctx));
   }
 
   updateView() {
     this.clear();
-    const ctx = this.ctx;
+    let ctx = this.ctx;
     this.obj.draw(ctx);
+    this.coins.forEach(coin => coin.draw(ctx));
   }
 
   drawBackground() {
-     this.ctx.drawImage(this.mazeImage, 0, 0);
-   
+     this.ctx.drawImage(this.mazeImage, 0, 0); 
   }
 
   validMove(delta, k, height, width, obj) { 
@@ -304,17 +325,42 @@ class GameView {
     let imgData = ctx.getImageData(newX, newY, w, h);
     let pix = imgData.data;
 
+    for (let i = 0; i < pix.length; i += 4) {
+      if (pix[i] !== 0) {
+        this.removeCoin(newX, newY, w, h);
+        break 
+      } else if (pix[i+1] !== 0) {
+        this.score.win();
+      }
+    }
+    
     let collision = false
 
     for (let i = 3; i < pix.length; i += 4) {
-      if(pix[i] !== 0) {
+      if(pix[i] !== 0 && pix[i-3] === 0  && pix[i-2] === 0) {
         collision = true;
         break;
       }
     }
+
     if (!collision) {
       obj.move(delta);
     }
+  }
+
+  removeCoin(newX, newY, w, h) {
+    let newCoins = [];
+
+    this.coins.forEach(coin => {
+      if (coin.pos[0] >= newX && coin.pos[0] <= newX + w &&
+          coin.pos[1] >= newY && coin.pos[1] <= newY + h) {
+            this.score.addPoint();
+          } else {
+            newCoins.push(coin);
+          }
+    })
+
+    this.coins = newCoins;
   }
 }
 
@@ -329,42 +375,6 @@ GameView.MOVES = {
   right: [10, 0]
 }
 
-
-
-
-// class GameView {
-//   constructor(canvas, ctx) {
-//     this.canvas = canvas;
-//     this.ctx = ctx;
-//   }
-
-//   bindKeyHandlers(obj) {
-
-//     Object.keys(GameView.MOVES).forEach((k) => {
-//       const delta = GameView.MOVES[k];
-//       key(k, () => { obj.move(delta) })
-//     })
-//   }
-
-//   clear() {
-//     const ctx = this.ctx;
-//     const canvas = this.canvas;
-//     const width = canvas.width;
-//     const height = canvas.height;
-
-//     ctx.clearRect(0, 0, width, height);
-//   }
-
-//   updateView(obj) {
-//     // const view = this.view;
-//     // view.clear();
-//     this.clear();
-
-//     // const obj = this.obj;
-//     const ctx = this.ctx;
-//     obj.draw(ctx);
-//   }
-// }
 
 
 /***/ }),
@@ -382,11 +392,11 @@ const MovingObject = __webpack_require__(/*! ./moving_object */ "./src/moving_ob
 const GameView = __webpack_require__(/*! ./game_view */ "./src/game_view.js");
 const Game = __webpack_require__(/*! ./game */ "./src/game.js");
 const Modal = __webpack_require__(/*! ./modal */ "./src/modal.js");
+const Interface = __webpack_require__(/*! ./interface */ "./src/interface.js");
+const Coin = __webpack_require__(/*! ./coins */ "./src/coins.js");
+const Score = __webpack_require__(/*! ./score */ "./src/score.js");
 
 document.addEventListener("DOMContentLoaded", () => {
-  let n = 15;
-  let w = 750;
-  let h = 750;
 
   const overlay = document.querySelector('.modal-overlay');
   const modal = new Modal(overlay);
@@ -395,11 +405,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const canvas = document.getElementById("maze");
   const ctx = canvas.getContext('2d');
-  game = new Game(n, canvas, ctx);
+
+  // const interface = new Interface(ctx, canvas);
+
+  game = new Game(canvas, ctx, 15);
   game.newStart();
 
-  // game.toImage();
+  // window.nextLevel = interface.nextLevel.bind(interface);
+
 })
+
+/***/ }),
+
+/***/ "./src/interface.js":
+/*!**************************!*\
+  !*** ./src/interface.js ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Game = __webpack_require__(/*! ./game */ "./src/game.js");
+
+class Interface {
+  constructor(ctx, canvas) {
+    this.ctx = ctx;
+    this.canvas = canvas;
+    const levelButton = document.querySelector('.level-button'); 
+
+    this.n = 10;
+  }
+
+  registerListeners(levelButton) {
+    levelButton.addEventListener('click', this.nextLevel.bind(this));
+  }
+
+  nextLevel() {
+    this.n += 5;
+    const width = this.canvas.width;
+    const height = this.canvas.height;
+
+    this.ctx.clearRect(0, 0, width, height);
+
+    // debugger
+    const game = new Game(this.canvas, this.ctx, this.n);
+    // debugger
+    game.newStart();
+  }
+}
+
+module.exports = Interface;
 
 /***/ }),
 
@@ -717,41 +771,77 @@ module.exports = Modal;
 class MovingObject {
   constructor(object) {
     this.pos = object.pos;
-    this.vel = object.vel;
     this.height = object.height;
     this.width = object.width;
     this.color = object.color;
+    this.type = object.type;
+
     this.move = this.move.bind(this);
-
   }
-
   // U+1F47B
 
   draw(ctx) {
-
-    // let code = "U+1F47B";
-
-
-
-
     ctx.fillStyle = this.color;
     ctx.beginPath();
     ctx.rect(this.pos[0], this.pos[1], this.width, this.height);
-    ctx.fillStyle = "red";
+    // square.classList.add("hero");
+    // let img = document.getElementById("image");
+    // ctx.drawImage(img, this.pos[0], this.pos[1], 30, 30);
     ctx.fill();
+    
   }
 
   move(delta, k, height, width) {
-
-      // debugger 
+    // let square = ctx.rect(this.pos[0], this.pos[1], this.width, this.height);
+    // square.classList.remove("hero");
     this.pos = [this.pos[0] + delta[0], this.pos[1] + delta[1]]
-
   }
-
-
 }
 
 module.exports = MovingObject;
+
+/***/ }),
+
+/***/ "./src/score.js":
+/*!**********************!*\
+  !*** ./src/score.js ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+class Score {
+  constructor() {
+    this.score = 0;
+
+  }
+
+  addPoint() {
+    this.score += 1;
+    this.updateCoins();
+  }
+
+  updateCoins() {
+    let el = document.getElementById("coins");
+    let score = this.score;
+    el.innerHTML = score;
+  }
+
+  win() {
+    let header = document.getElementById("modal-header");
+    header.innerHTML = "YOU WIN!";
+
+    let newGame = document.getElementById("new-game");
+    newGame.classList.remove("is-hidden");
+
+    let hide = document.getElementById("start");
+    hide.classList.add("is-hidden");
+
+    let modal = document.getElementById("modal")
+    modal.classList.remove("is-hidden");
+  }
+}
+
+module.exports = Score;
 
 /***/ })
 

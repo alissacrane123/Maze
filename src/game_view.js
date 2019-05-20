@@ -1,13 +1,13 @@
 // const Maze = require("./maze");
 
 class GameView {
-  constructor(canvas, ctx, obj, mazeImage) {
+  constructor(canvas, ctx, obj, mazeImage, coins, score) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.obj = obj;
-    this.mazeImage = mazeImage;
-
-    
+    this.mazeImage = mazeImage;  
+    this.coins = coins;  
+    this.score = score;
   }
 
   start() {
@@ -16,43 +16,37 @@ class GameView {
   }
 
   bindKeyHandlers() {
-    const ctx = this.ctx;
-    const obj = this.obj;
-    const height = this.canvas.height;
-    const width = this.canvas.width;
+    let ctx = this.ctx;
+    let obj = this.obj;
+    let height = this.canvas.height;
+    let width = this.canvas.width;
     this.validMove = this.validMove.bind(this);
 
     Object.keys(GameView.MOVES).forEach((k) => {
       const delta = GameView.MOVES[k];
       key(k, () => { 
-        // debugger
         this.validMove(delta, k, height, width, obj)
-        // obj.move(delta, k, height, width);        
       })
     })
   }
 
   clear() {
-    const ctx = this.ctx;
-    const canvas = this.canvas;
-    const width = canvas.width;
-    const height = canvas.height;
-    
-    ctx.clearRect(0, 0, width, height);
-   
+    let ctx = this.ctx;
+    let canvas = this.canvas;   
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
     this.drawBackground();
-    // debugger;
+    this.coins.forEach(coin => coin.draw(ctx));
   }
 
   updateView() {
     this.clear();
-    const ctx = this.ctx;
+    let ctx = this.ctx;
     this.obj.draw(ctx);
+    this.coins.forEach(coin => coin.draw(ctx));
   }
 
   drawBackground() {
-     this.ctx.drawImage(this.mazeImage, 0, 0);
-   
+     this.ctx.drawImage(this.mazeImage, 0, 0); 
   }
 
   validMove(delta, k, height, width, obj) { 
@@ -91,17 +85,42 @@ class GameView {
     let imgData = ctx.getImageData(newX, newY, w, h);
     let pix = imgData.data;
 
+    for (let i = 0; i < pix.length; i += 4) {
+      if (pix[i] !== 0) {
+        this.removeCoin(newX, newY, w, h);
+        break 
+      } else if (pix[i+1] !== 0) {
+        this.score.win();
+      }
+    }
+    
     let collision = false
 
     for (let i = 3; i < pix.length; i += 4) {
-      if(pix[i] !== 0) {
+      if(pix[i] !== 0 && pix[i-3] === 0  && pix[i-2] === 0) {
         collision = true;
         break;
       }
     }
+
     if (!collision) {
       obj.move(delta);
     }
+  }
+
+  removeCoin(newX, newY, w, h) {
+    let newCoins = [];
+
+    this.coins.forEach(coin => {
+      if (coin.pos[0] >= newX && coin.pos[0] <= newX + w &&
+          coin.pos[1] >= newY && coin.pos[1] <= newY + h) {
+            this.score.addPoint();
+          } else {
+            newCoins.push(coin);
+          }
+    })
+
+    this.coins = newCoins;
   }
 }
 
@@ -116,39 +135,3 @@ GameView.MOVES = {
   right: [10, 0]
 }
 
-
-
-
-// class GameView {
-//   constructor(canvas, ctx) {
-//     this.canvas = canvas;
-//     this.ctx = ctx;
-//   }
-
-//   bindKeyHandlers(obj) {
-
-//     Object.keys(GameView.MOVES).forEach((k) => {
-//       const delta = GameView.MOVES[k];
-//       key(k, () => { obj.move(delta) })
-//     })
-//   }
-
-//   clear() {
-//     const ctx = this.ctx;
-//     const canvas = this.canvas;
-//     const width = canvas.width;
-//     const height = canvas.height;
-
-//     ctx.clearRect(0, 0, width, height);
-//   }
-
-//   updateView(obj) {
-//     // const view = this.view;
-//     // view.clear();
-//     this.clear();
-
-//     // const obj = this.obj;
-//     const ctx = this.ctx;
-//     obj.draw(ctx);
-//   }
-// }
