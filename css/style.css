@@ -68,7 +68,7 @@ html, body {
   flex-direction: row;
 }
 
-.coins-container {
+.coins-container, .timer-container {
   width: 200px;
   height: 100px;
   margin-top: auto;
@@ -82,7 +82,7 @@ html, body {
   font-size: 20px;
 }
 
-.coins-header {
+.coins-header, .timer-header {
   text-align: center;
   padding-bottom: 5px;
   border-bottom: 2px solid rgb(128, 204, 240);
@@ -123,6 +123,7 @@ canvas {
   color: rgb(146, 146, 236);
   font-weight: bolder;
   font-size: 20px;
+  cursor: pointer
 }
 /* Modal Content */
 
@@ -164,6 +165,7 @@ canvas {
     cursor: pointer;
     margin-left: auto;
     margin-right: auto;
+    cursor: pointer;
 }
 
 .start, .new-game {
@@ -177,5 +179,6 @@ canvas {
   color: rgb(146, 146, 236);
   font-weight: bolder;
   font-size: 20px;
+  cursor: pointer;
 }
 

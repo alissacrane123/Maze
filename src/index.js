@@ -18,11 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("maze");
   const ctx = canvas.getContext('2d');
 
-  // const interface = new Interface(ctx, canvas);
-
-  game = new Game(canvas, ctx, 15);
+  game = new Game(canvas, ctx, 15, 20);
   game.newStart();
-
-  // window.nextLevel = interface.nextLevel.bind(interface);
 
 })
